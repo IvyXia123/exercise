@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery.min.js"></script>
+		<style>
+			body,ul,ol{margin:0;padding:0;}
+			li{list-style:none;}
+			img{border:none;vertical-align:top;}
+			#box{width:470px;height:150px;overflow:hidden;margin:30px auto;position:relative;}
+			ul{width:470px;position:absolute;top:0;left:0;z-index:1;}
+			ul li{width:470px;position:absolute;top:0;}
+			ol{z-index:2;width:120px;position:absolute;right:10px;bottom:10px;}
+			ol li{width:20px;height:20px;float:left;margin:0 2px;display:inline;background:#fff;color:#f60;
+				line-height:20px;text-align:center;}
+			ul img{width:470px;height:150px;float:left;}
+			ol .active{background:#f60;color:#fff;}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<ul>
+				<li><img src="img/1.jpg" alt="广告一" /></li>
+				<li><img src="img/2.jpg" alt="广告二" /></li>
+				<li><img src="img/3.jpg" alt="广告三" /></li>
+				<li><img src="img/4.jpg" alt="广告四" /></li>
+				<li><img src="img/5.jpg" alt="广告五" /></li>
+			</ul>
+			<ol>
+				<li class="active">1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+			</ol>
+		</div>
+
+		<script>
+			$(function(){
+				var $olLi=$("ol li");
+				var $ulLi=$("ul li");
+				var $oneWidth=$ulLi.width();   //每一张图片的宽度
+				var $iNow=0;
+				var timer=null;
+
+				$ulLi.slice(1).each(function(){   //让第二张往后的图片都在left为$oneWidth的位置
+					$(this).css("left",$oneWidth);
+				});
+
+				$olLi.mouseover(function(){
+					clearInterval(timer);
+					timer=setTimeout($.proxy(function(){
+						$(this).attr("class","active").siblings().attr("class","");
+						var $index=$(this).index();
+
+						if($iNow<$index){    //当$iNow<$index，从右向左走
+							$ulLi.eq($(this).index()).css("left",$oneWidth);
+							$ulLi.eq($iNow).animate({left:-$oneWidth},400);   //让当前显示的图片向左移动一张图片的长度
+						}else if($iNow>$index){     //当$iNow>$index，从左向右走
+							$ulLi.eq($(this).index()).css("left",-$oneWidth);
+							$ulLi.eq($iNow).animate({left:$oneWidth},400);   //让当前显示的图片向右移动一张图片的长度
+						};
+
+						$ulLi.eq($(this).index()).animate({left:0},400); //让小圆点当前index所对应的图片left为0，即从$oneWidth的位置移动当图片可视区域
+						$iNow=$index;
+
+					},this),400);
+
+				});
+			})
+		</script>
+	</body>
+</html>

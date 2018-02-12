@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+    <div id="div1">div</div>
+</body>
+<script>
+    $("#div1").click(function(){
+        alert(123);
+    });
+    var $div=$("#div1").remove();   //remove()删除元素节点时连同它所对应的事件行为一并删除；=$("#div1
+    $("body").append($div);       //
+
+    //    var $div=$("#div1").detach();  //detach()删除元素节点时它所对应的事件行为不会被一并删除
+    $("body").append($div);
+</script>
+</html>

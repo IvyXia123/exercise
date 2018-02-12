@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery.min.js"></script>
+		<style>
+			*{margin:0;padding:0;}
+			li{list-style:none;}
+			img{border:none;}
+			body{background:#ecfaff;}
+			#play{width:470px;height:150px;overflow:hidden;border:1px solid #d8d8d8;margin:100px auto 0;}
+			.pocket{width:470px;height:150px;position:relative;overflow:hidden;}
+			ol{position:absolute;right:5px;bottom:5px;z-index:2;}
+			ol li{float:left;margin-right:3px;display:inline;cursor:pointer;background:lightyellow;border:1px solid #000;width:20px;height:20px;text-align:center;line-height:20px;}
+			ul{position:absolute;top:0;left:0;width:470px;z-index:1;background:white;}
+			ul li{position:relative;left:0;top:0;width:470px;height:150px;}
+			ul img{width:470px;height:150px;float:left;}
+			.active{background:yellow;}
+		</style>
+		<script>
+			$(function(){
+				var timer=null;
+				var nowIndex=0;
+				$newUl=$("ul").children().clone();
+				$("ul").append($newUl);
+				$oLi=$("ol li");
+				$oUi=$("ul li")
+				$ulHeight=parseInt($oUi.length*$oUi.outerHeight());
+				$("ul").height($ulHeight);
+				
+				$oLi.mouseover(function(){
+					$(this).attr("class","active").siblings().attr("class"," ");
+					var index=$(this).index();
+//					$("ul").css("top",-150*index);
+					$("ul").stop().animate({top:-150*index},1000);
+				});
+				
+				autoPlay();
+				function autoPlay(){
+					timer=setInterval(function(){
+//					if(nowIndex==$oUi.length/2){
+//						nowIndex=-1;
+//					};
+//					if(nowIndex==$oUi.length-1){
+//						nowIndex=$oUi.length/2;
+//					}
+					nowIndex++;
+					console.log(nowIndex);
+					$oLi.eq(nowIndex%5).attr("class","active").siblings().attr("class"," ");
+					$("ul").stop().animate({top:-150*nowIndex},1000);
+				},2000);
+				}
+				
+				$("#play").mouseover(function(){
+					clearInterval(timer);
+				})
+				
+				$("#play").mouseout(function(){
+					autoPlay();
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<div id="play">
+			<div class="pocket">
+				<ol>
+					<li class="active">1</li>
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+					<li>5</li>
+				</ol>
+				<ul>
+					<li><a href="javascript:;"><img src="img/1.jpg" alt="广告一" /></a></li>
+					<li><a href="javascript:;"><img src="img/2.jpg" alt="广告二" /></a></li>
+					<li><a href="javascript:;"><img src="img/3.jpg" alt="广告三" /></a></li>
+					<li><a href="javascript:;"><img src="img/4.jpg" alt="广告四" /></a></li>
+					<li><a href="javascript:;"><img src="img/5.jpg" alt="广告五" /></a></li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>

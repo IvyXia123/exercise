@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery.min.js"></script>
+		<style>
+			*{margin:0;padding:0;}
+			#login{width:300px;height:300px;border:1px solid #000;position:absolute;}
+			#close{position:absolute;right:0;top:0;}
+		</style>
+	</head>
+	<body style="height:2000px;">
+		<input id="input1" type="button" value="登录" />
+	</body>
+	<script>
+		$(function(){
+			$("#input1").click(function(){
+				var $login=$('<div id="login"><p>用户名：<input type="text" /></p><p>密码：<input type="passsword" /></p><div id="close">X</div></div>');
+				$("body").append($login);  //点击登录按钮时添加$login节点
+				
+				//让添加的$login节点处于页面的居中位置
+				$login.css("left",($(window).width()-$login.outerWidth())/2);
+				$login.css("top",($(window).height()-$login.outerHeight())/2);
+				
+				//点击关闭按钮时移除弹框
+				$("#close").click(function(){
+					$login.remove();
+				})
+				
+				//鼠标滚动时让页面始终处于居中状态
+				$(window).scroll(function(){
+					$login.css("top",($(window).height()-$login.outerHeight())/2+$(document).scrollTop());
+				})
+			})
+		})
+	</script>
+</html>

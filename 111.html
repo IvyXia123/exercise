@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/jquery.min.js"></script>
+		<style>
+			ul,li{margin:0;padding:0;list-style:none;}
+			li{width:20px;height:20px;margin:2px;background:red;float:left;}
+		</style>
+	</head>
+	<body>
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</body>
+	<script>
+			$(function(){
+				var bBtn=true;
+				var timer=null;
+				$("li").mouseover(function(){    
+					if(bBtn){
+						clearInterval(timer);   //鼠标快速移入时清除定时器避免出现闪烁问题
+						$("li").slice(0,$(this).index()+1).css("background","blue");
+						$("li").slice($(this).index()+1).css("background","red");
+					};
+				}).mouseout(function(){
+					if(bBtn){
+						timer=setTimeout(function(){     //延迟目的是为了避免鼠标移入间隙时出现闪烁问题
+							$("li").css("background","red");
+						},100);
+					}
+				}).click(function(){
+					bBtn=false; 
+				})
+			})
+	</script>
+</html> 
+
+
+
+
+

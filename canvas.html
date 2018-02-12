@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{margin:0;padding:0}
+        #com{position:absolute;left:100px;top:200px;}
+        #colors{margin-right:10px;}
+        .colors{width:30px;height:30px;float:left;margin-right:5px;cursor:pointer;overflow:hidden;}
+        #dblack{background:black}
+        #dred{background:red}
+        #dpink{background:pink}
+        #dyellow{background:yellow}
+        #dblue{background:blue}
+        .clear{display:inline-block;float:right;margin-top:6px;}
+    </style>
+    <script>
+        var canvasWidth,canvasHeight,canvas,context;
+        var isMouseDown=false;  //判断鼠标是否按下去
+        var startLoc={x:0,y:0};  //存放起点的坐标
+        var lineColor='black';
+        window.onload=function(){
+            canvasWidth=300;
+            canvasHeight=300;
+            canvas=document.getElementById("canvas");  //获取canvas对象
+            context=canvas.getContext("2d"); //获取到canvas的画图环境
+            drawGrid();
+            canvas.onmousedown=function(e){  //鼠标按下之后
+                isMouseDown=true;
+                startLoc=windowToCanvas(e.clientX,e.clientY);  //起点在canvas上的坐标
+            }
+            canvas.onmouseup=function(e){  //鼠标抬起之后
+                isMouseDown=false;
+            }
+            canvas.onmouseout=function(e){    //鼠标离开canvas之后
+                isMouseDown=false;
+            }
+            canvas.onmousemove=function(e){   //鼠标在canvas上移动的时候
+                if(isMouseDown){   //当鼠标在canvas上移动的时候，只有鼠标按下去之后才能画图
+                    var curLoc=windowToCanvas(e.clientX,e.clientY);   //终点的坐标
+                    context.beginPath();
+                    context.moveTo(startLoc.x,startLoc.y);
+                    context.lineTo(curLoc.x,curLoc.y);
+                    context.strokeStyle=lineColor;
+                    context.lineWidth=6;
+                    context.lineCap="round";  //给拐角处加个圆形的小帽子，避免画笔太粗时出现线条不匀滑的问题
+                    context.lineJoin="round";
+                    context.stroke();
+                    startLoc=curLoc;
+                }
+            }
+
+            //选颜色：
+            var colors=document.getElementsByClassName("colors");
+            for(var i=0;i<colors.length;i++){
+                colors[i].onclick=function(){
+                    lineColor=this.getAttribute("id").substring(1);
+                }
+            }
+        }
+
+        //canvas到屏幕的距离
+        function windowToCanvas(x,y){
+            var bbox=canvas.getBoundingClientRect();   //获取canvas到屏幕的距离
+            return {x:x-bbox.left,y:y-bbox.top};
+        }
+
+        //清楚文字内容：
+        function clearCanvas(){
+            context.clearRect(0,0,canvasWidth,canvasHeight);
+            drawGrid();
+        }
+
+        //画米字格：
+        function drawGrid(){
+            canvas.width=canvasWidth;
+            canvas.height=canvasHeight;
+            context.strokeStyle='#f00';  //设置线的颜色
+            context.beginPath();   //开始画图
+            context.moveTo(0,0);
+            context.lineTo(canvasWidth,0);
+            context.lineTo(canvasWidth,canvasHeight);
+            context.lineTo(0,canvasHeight);
+            context.closePath();
+            context.stroke();
+
+            context.beginPath();
+            context.moveTo(0,0);
+            context.lineTo(canvasWidth,canvasHeight);
+            context.moveTo(canvasWidth,0);
+            context.lineTo(0,canvasHeight);
+            context.moveTo(canvasWidth,0);
+            context.lineTo(0,canvasHeight);
+            context.moveTo(canvasWidth/2,0);
+            context.lineTo(canvasWidth/2,canvasHeight);
+            context.moveTo(0,canvasHeight/2);
+            context.lineTo(canvasWidth,canvasHeight/2);
+            context.stroke();
+        }
+    </script>
+</head>
+<body>
+    <div id="com">
+        <canvas id="canvas"></canvas>
+        <div id="colors">
+            <div class="colors" id="dblack"></div>
+            <div class="colors" id="dred"></div>
+            <div class="colors" id="dpink"></div>
+            <div class="colors" id="dyellow"></div>
+            <div class="colors" id="dblue"></div>
+            <a class="clear" href="havascript:;" onclick="clearCanvas()">清除</a>
+        </div>
+    </div>
+</body>
+</html>

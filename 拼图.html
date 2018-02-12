@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.min.js"></script>
+    <style>
+        *{margin:0;padding:0;}
+        #div1{width:300px;height:300px;border:1px solid #000;margin:20px;position:relative;}
+        #div1 img{width:100px;height:100px;overflow:hidden;float:left;}
+    </style>
+</head>
+<body>
+    <div id="div1">
+        <img src="img/11.jpg"/>
+        <img src="img/22.jpg"/>
+        <img src="img/33.jpg"/>
+        <img src="img/44.jpg"/>
+        <img src="img/55.jpg"/>
+        <img src="img/66.jpg"/>
+        <img src="img/77.jpg"/>
+        <img src="img/88.jpg"/>
+    </div>
+
+    <script>
+        $(function(){
+            var posArr=[];
+            var blankIndex=8;    //设置空元素的索引
+            //将浮动元素转为定位元素：
+            $("img").each(function(i,elem){
+                posArr.push([$(elem).position().left,$(elem).position().top]);   //获取浮动元素X轴和Y轴的坐标
+            })
+
+            $("img").each(function(i,elem){
+                $(elem).css("position","absolute");
+                $(elem).css("left",posArr[i][0]);
+                $(elem).css("top",posArr[i][1]);
+            })
+
+            //给每一个img分配一个自定义索引_index
+            $("img").each(function(i,elem){
+                $(elem).attr("_index",i);     //索引值为0到7
+            })
+        })
+    </script>
+</body>
+</html>
